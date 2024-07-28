@@ -16,7 +16,7 @@ async function getProducts(categorySlug: string) {
 export default async function OrderPage({ params }: { params: { category: string } }) {
 
   const products = await getProducts(params.category);
-
+  // TODO: contemplar el caso en el que no haya productos de una categoria porque se pase otra cosa por URL
   return (
     <>
 
