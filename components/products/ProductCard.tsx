@@ -12,7 +12,7 @@ type ProductCardProps = {
 // TODO: Hacer que las imagenes encajen en cualquier resolucion
 export default function ProductCard({ product }: ProductCardProps) {
     return (
-        <div className='border bg-white'>
+        <div className='rounded border bg-white overflow-auto'>
 
             <Image
                 width={400}
