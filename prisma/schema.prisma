@@ -24,4 +24,23 @@ model Product {
   is_active Boolean @default(true)
   categoryId Int
   category Category @relation(fields: [categoryId], references: [id])
+  OrderItems OrderProducts[]
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  name String
+  total Float
+  date DateTime @default(now())
+  status Boolean @default(false)
+  orderReatyAt DateTime?
+  orderProducts OrderProducts[]
+}
+
+model OrderProducts {
+  id Int @id @default(autoincrement())
+  orderId Int
+  order Order @relation(fields: [orderId], references: [id])
+  productId Int
+  product Product @relation(fields: [productId], references: [id])
 }
