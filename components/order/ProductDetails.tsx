@@ -11,8 +11,9 @@ export default function ProductDetails({ item }: ProductDetailsProps) {
 
     const increaseQuantity = useStore((state) => state.increaseQuantity);
     const decreaseQuantity = useStore((state) => state.decreaseQuantity);
-    const disableIncrease = useStore((state) => state.disableIncrease(item.id));  // control that the quantity is not greater than MAX_QUANTITY
-    const disableDecrease = useStore((state) => state.disableDecrease(item.id));  // control that the quantity is not less than MIN_QUANTITY
+    const disableIncrease = useStore((state) => state.disableIncrease(item.id));
+    const disableDecrease = useStore((state) => state.disableDecrease(item.id));
+    const removeItem = useStore((state) => state.removeItem);
 
     return (
         <div className="shadow space-y-1 p-4 bg-white  border-t border-gray-200 ">
@@ -22,7 +23,7 @@ export default function ProductDetails({ item }: ProductDetailsProps) {
 
                     <button
                         type="button"
-                        onClick={() => { }}
+                        onClick={() => removeItem(item.id)}
                     >
                         <XCircleIcon className="text-red-600 h-8 w-8" />
                     </button>
@@ -46,8 +47,8 @@ export default function ProductDetails({ item }: ProductDetailsProps) {
 
                     <button
                         type="button"
-                        disabled={disableIncrease}
                         onClick={() => increaseQuantity(item.id)}
+                        disabled={disableIncrease}
                         className='disabled:opacity-20'
                     >
                         <PlusIcon className="h-6 w-6" />

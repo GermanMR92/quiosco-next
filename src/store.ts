@@ -5,14 +5,15 @@ import { Product } from "@prisma/client";
 // We define the store interface with the variables and functions that we will use
 interface Store {
     order: OrderItem[];
-    addToOrder: (product: Product) => void;
-    increaseQuantity: (id: Product['id']) => void;
-    decreaseQuantity: (id: Product['id']) => void;
-    getProductInfo: (id: Product['id']) => OrderItem | undefined;
-    disableIncrease: (id: Product['id']) => boolean;
-    disableDecrease: (id: Product['id']) => boolean;
-    MAX_QUANTITY: number;
-    MIN_QUANTITY: number;
+    addToOrder: (product: Product) => void; // Add a product to the order
+    increaseQuantity: (id: Product['id']) => void; // Increase the quantity of a product in the order
+    decreaseQuantity: (id: Product['id']) => void; // Decrease the quantity of a product in the order
+    getProductInfo: (id: Product['id']) => OrderItem | undefined; // Get the product information
+    disableIncrease: (id: Product['id']) => boolean; // control that the quantity is not greater than MAX_QUANTITY
+    disableDecrease: (id: Product['id']) => boolean; // control that the quantity is not less than MIN_QUANTITY
+    removeItem: (id: Product['id']) => void;  // Remove a product from the order
+    MAX_QUANTITY: number; // Maximum quantity of a product in the order
+    MIN_QUANTITY: number; // Minimum quantity of a product in the order
 }
 
 /**
@@ -20,13 +21,9 @@ interface Store {
  */
 export const useStore = create<Store>((set, get) => ({
     order: [],
-    MAX_QUANTITY: 5, // Maximum quantity of a product
-    MIN_QUANTITY: 1, // Minimum quantity of a product
+    MAX_QUANTITY: 5,
+    MIN_QUANTITY: 1,
 
-    /**
-     * Adds a product to the order.
-     * @param product - The product to be added.
-     */
     addToOrder: (product) => {
         // We extract unnecessary values
         const { categoryId, image, description, is_active, ...data } = product;
@@ -58,7 +55,8 @@ export const useStore = create<Store>((set, get) => ({
             order,
         }));
     },
-    increaseQuantity: (id) => { // Increase the quantity of a product in the order
+
+    increaseQuantity: (id) => {
 
         // control that the quantity is not greater than MAX_QUANTITY
         if (get().order.find((item) => item.id === id && item.quantity === get().MAX_QUANTITY)) {
@@ -76,7 +74,8 @@ export const useStore = create<Store>((set, get) => ({
             )
         }));
     },
-    decreaseQuantity: (id) => { // Decrease the quantity of a product in the order
+
+    decreaseQuantity: (id) => {
 
         // control that the quantity is not less than MIN_QUANTITY
         if (get().order.find((item) => item.id === id && item.quantity === get().MIN_QUANTITY)) {
@@ -94,14 +93,21 @@ export const useStore = create<Store>((set, get) => ({
             )
         }))
     },
-    getProductInfo: (id) => get().order.find((item) => item.id === id), // Get the product information
 
-    disableIncrease: (id) => { // control that the quantity is not greater than MAX_QUANTITY
+    removeItem: (id) => {
+        set((state) => ({
+            order: state.order.filter((item) => item.id !== id) // get all the products except the one we want to remove
+        }));
+    },
+
+    getProductInfo: (id) => get().order.find((item) => item.id === id),
+
+    disableIncrease: (id) => {
         const product = get().getProductInfo(id);
         return product ? product.quantity >= get().MAX_QUANTITY : false;
     },
 
-    disableDecrease: (id) => { // control that the quantity is not less than MIN_QUANTITY
+    disableDecrease: (id) => {
         const product = get().getProductInfo(id);
         return product ? product.quantity <= get().MIN_QUANTITY : false;
     }
