@@ -15,18 +15,18 @@ export async function createOrder(data: unknown) {
     try {
         
         // Create order. The OrderProducts relation is created automatically
-        await prisma.order.create({
-            data: {
-                name: result.data.name,
-                total: result.data.total,
-                orderProducts: {
-                    create: result.data.order.map(product => ({
-                        productId: product.id,
-                        quantity: product.quantity
-                    }))
-                }
-            }
-        })
+        // await prisma.order.create({
+        //     data: {
+        //         name: result.data.name,
+        //         total: result.data.total,
+        //         orderProducts: {
+        //             create: result.data.order.map(product => ({
+        //                 productId: product.id,
+        //                 quantity: product.quantity
+        //             }))
+        //         }
+        //     }
+        // })
 
     } catch (error) {
         console.log('error', error);

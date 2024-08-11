@@ -12,6 +12,7 @@ interface Store {
     disableIncrease: (id: Product['id']) => boolean; // control that the quantity is not greater than MAX_QUANTITY
     disableDecrease: (id: Product['id']) => boolean; // control that the quantity is not less than MIN_QUANTITY
     removeItem: (id: Product['id']) => void;  // Remove a product from the order
+    clearOrder: () => void; // Clear the order
     MAX_QUANTITY: number; // Maximum quantity of a product in the order
     MIN_QUANTITY: number; // Minimum quantity of a product in the order
 }
@@ -97,6 +98,12 @@ export const useStore = create<Store>((set, get) => ({
     removeItem: (id) => {
         set((state) => ({
             order: state.order.filter((item) => item.id !== id) // get all the products except the one we want to remove
+        }));
+    },
+
+    clearOrder: () => {
+        set(() => ({
+            order: []
         }));
     },
 
