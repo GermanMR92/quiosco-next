@@ -16,11 +16,13 @@ export default function OrderSummary() {
   const handleCreateOrder = async (formData: FormData) => {
 
     const data = {
-      name: formData.get('name')
+      name: formData.get('name'),
+      total,
+      order
     }
 
     const result = OrderSchema.safeParse(data)
-
+    
     // TODO: Meter los mensajes de error en un solo toas, actualmente sale un toast por cada error
     if (!result.success) {
       result.error.issues.forEach((issue) => {
@@ -30,7 +32,7 @@ export default function OrderSummary() {
     }
 
     const response = await createOrder(data)
-    
+
     if (response?.errors) {
       response.errors.forEach((issue) => {
         toast.error(issue.message)

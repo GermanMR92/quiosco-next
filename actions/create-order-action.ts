@@ -10,5 +10,13 @@ export async function createOrder(data: unknown) {
             errors: result.error.issues
         }
     }
-    
+
+    try {
+        console.log('data', data);
+
+    } catch (error) {
+        console.log('error', error);
+
+    }
+
 }
