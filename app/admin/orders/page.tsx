@@ -4,7 +4,7 @@ export default function OrdersPage() {
   return (
     <>
         <Heading>
-            Administrar ordenes
+            Administrar pedidos
         </Heading>
     </>
   )
