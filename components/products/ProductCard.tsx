@@ -8,11 +8,10 @@ type ProductCardProps = {
     product: Product,
 }
 
-// TODO: Hacer las tarjetas siempre del mismo tamaño (Si el nombre es mayor, que se ajuste el tamaño de la tarjeta)
-// TODO: Hacer que las imagenes encajen en cualquier resolucion
+// TODO: Hacer que las imagenes encajen en cualquier resolucion (FHD o superior)
 export default function ProductCard({ product }: ProductCardProps) {
     return (
-        <div className='rounded border bg-white overflow-auto'>
+        <div className='rounded border bg-white overflow-auto flex flex-col justify-between h-full'>
 
             <Image
                 width={400}
