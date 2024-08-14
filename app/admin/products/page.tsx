@@ -1,12 +1,19 @@
 import Heading from "@/components/ui/Heading";
-import {getProducts} from "@/actions/get-products-action";
+import { getProducts } from "@/actions/get-products-action";
+import { getProductsCount } from "@/actions/get-products-count-action";
 import ProductTable from "@/components/products/ProductsTable";
+import ProductPagination from "@/components/products/ProductPagination";
 
 
-export default async function ProductsPage() {
+export default async function ProductsPage({searchParams}: {searchParams: { page: string }}) {
 
-  let is_active = true;
-  const products = await getProducts(is_active);
+  const page = +searchParams.page || 1;
+
+  // A promise that resolves to an array containing the fetched products and their total count.
+  const [ products, totalProducts ] = await Promise.all([
+    getProducts(true, page),
+    getProductsCount(true)
+  ])
 
   return (
     <>
@@ -15,6 +22,8 @@ export default async function ProductsPage() {
       </Heading>
 
       <ProductTable products={products} />
+
+      <ProductPagination page={page} />
     </>
   )
 }

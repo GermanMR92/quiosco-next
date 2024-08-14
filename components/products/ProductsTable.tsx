@@ -8,8 +8,6 @@ type productTableProps = {
 
 export default function ProductTable({ products }: productTableProps) {
 
-    console.table(products);
-
     return (
         <div className="px-4 sm:px-6 lg:px-8 mt-20">
             <div className="mt-8 flow-root ">
