@@ -1,4 +1,4 @@
-import { Order, OrderProducts, Product } from "@prisma/client";
+import { Order, OrderProducts, Product, Category } from "@prisma/client";
 
 // export type of product with a selection of properties from the Product and some news
 export type OrderItem = Pick<Product, "id" | "name" | "price"> & {
@@ -11,4 +11,9 @@ export type OrderWithProducts = Order & {
     orderProducts: (OrderProducts & {
         product: Product;
     })[] // <-- array of OrderProducts with the product included
+}
+
+// export type of product with his category
+export type ProductWithCategory = Product & {
+    category: Category;
 }
