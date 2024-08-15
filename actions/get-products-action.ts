@@ -2,9 +2,8 @@
 
 import { prisma } from "@/src/lib/prisma";
 
-export async function getProducts(is_active: boolean = true, page: number) {
+export async function getProducts(is_active: boolean = true, page: number, pageSize: number) {
 
-    const pageSize = 10;
     const skip = (page - 1) * pageSize;
 
     const products = await prisma.product.findMany(
