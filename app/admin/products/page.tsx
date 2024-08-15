@@ -4,6 +4,8 @@ import { getProductsCount } from "@/actions/get-products-count-action";
 import ProductTable from "@/components/products/ProductsTable";
 import ProductPagination from "@/components/products/ProductPagination";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import ProductSearchForm from "@/components/products/ProductSearchForm";
 
 
 export default async function ProductsPage({ searchParams }: { searchParams: { page: string } }) {
@@ -28,6 +30,17 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
       <Heading>
         Administrar productos
       </Heading>
+
+      <div className="flex flex-col lg:flex-row lg:justify-between gap-5">
+        <Link 
+          href={'/admin/products/new'}
+          className="bg-amber-400 w-full lg:w-auto text-xl px-10 py-3 text-center font-bold cursor-pointer"
+        >
+          Crear Producto
+        </Link>
+
+        <ProductSearchForm />
+      </div>
 
       <ProductTable products={products} />
 
