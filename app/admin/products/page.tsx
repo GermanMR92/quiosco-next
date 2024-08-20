@@ -8,22 +8,28 @@ import Link from "next/link";
 import ProductSearchForm from "@/components/products/ProductSearchForm";
 
 
-export default async function ProductsPage({ searchParams }: { searchParams: { page: string } }) {
+export default async function ProductsPage({ searchParams }: { searchParams: { page: string, search: string } }) {
 
+  console.log('searchParams', searchParams.search);
   const page = +searchParams.page || 1;
-  const pageSize = 10;
+  const pageSize = 10; // TODO: poner en un archivo de constantes
 
-  if (page < 0) redirect('/admin/products?page=1');
+  if(searchParams.search == undefined) {
+    console.log('no hay criterios de busquedas');
+    if (page <= 0) redirect('/admin/products?page=1');// TODO: todas las rutas ponerlas en un archivo con constantes
+  }
 
   // A promise that resolves to an array containing the fetched products and their total count.
   const [products, totalProducts] = await Promise.all([
-    getProducts(true, page, pageSize),
-    getProductsCount(true)
+    getProducts(true, page, pageSize, searchParams.search),
+    getProductsCount(true, searchParams.search)
   ])
 
   const totalPages = Math.ceil(totalProducts / pageSize);
-
-  if (page > totalPages) redirect('/admin/products?page=1')
+  
+  if(searchParams.search == undefined) {
+    if (page > totalPages) redirect('/admin/products?page=1')// TODO: todas las rutas ponerlas en un archivo con constantes
+  }
 
   return (
     <>

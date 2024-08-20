@@ -23,3 +23,9 @@ export const OrderIdSchema = z.object({
     .transform(value => parseInt(value)) // <-- transform to number
     .refine(value => !isNaN(value), {message: 'El id del pedido es requerido'}) // <-- check if it's a number
 });
+
+export const SearchSchema = z.object({
+  search: z
+    .string()
+    .trim()
+});
