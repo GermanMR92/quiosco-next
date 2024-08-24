@@ -10,24 +10,29 @@ import ProductSearchForm from "@/components/products/ProductSearchForm";
 
 export default async function ProductsPage({ searchParams }: { searchParams: { page: string, search: string } }) {
 
-  console.log('searchParams', searchParams.search);
+  const searchTerm = searchParams.search;
   const page = +searchParams.page || 1;
   const pageSize = 10; // TODO: poner en un archivo de constantes
 
-  if(searchParams.search == undefined) {
-    console.log('no hay criterios de busquedas');
-    if (page <= 0) redirect('/admin/products?page=1');// TODO: todas las rutas ponerlas en un archivo con constantes
+  // Redirect to the first page if the page is less than 1.
+  if (page <= 0) {
+    if (searchTerm) {
+      redirect(`/admin/products?search=${searchTerm}&page=1`)// TODO: todas las rutas ponerlas en un archivo con constantes
+    } else {
+      redirect('/admin/products?page=1')// TODO: todas las rutas ponerlas en un archivo con constantes
+    }
   }
 
   // A promise that resolves to an array containing the fetched products and their total count.
   const [products, totalProducts] = await Promise.all([
-    getProducts(true, page, pageSize, searchParams.search),
-    getProductsCount(true, searchParams.search)
+    getProducts(true, page, pageSize, searchTerm),
+    getProductsCount(true, searchTerm)
   ])
 
   const totalPages = Math.ceil(totalProducts / pageSize);
-  
-  if(searchParams.search == undefined) {
+
+  // Redirect to the first page if the page is greater than the total number of pages.
+  if (searchTerm == undefined) {
     if (page > totalPages) redirect('/admin/products?page=1')// TODO: todas las rutas ponerlas en un archivo con constantes
   }
 
@@ -38,7 +43,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
       </Heading>
 
       <div className="flex flex-col lg:flex-row lg:justify-between gap-5">
-        <Link 
+        <Link
           href={'/admin/products/new'}
           className="bg-amber-400 w-full lg:w-auto text-xl px-10 py-3 text-center font-bold cursor-pointer"
         >
@@ -50,7 +55,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 
       <ProductTable products={products} />
 
-      <ProductPagination page={page} totalPages={totalPages} />
+      <ProductPagination page={page} totalPages={totalPages} searchTerm={searchTerm} />
     </>
   )
 }

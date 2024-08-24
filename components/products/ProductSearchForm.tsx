@@ -25,9 +25,12 @@ export default function ProductSearchForm() {
       return
     }
 
-    // TODO: todas las rutas ponerlas en un archivo con constantes
-    router.push(`/admin/products?page=1&search=${result.data.search}`)
-
+    // redirect to the new URL based on the search term
+    if (result.data.search === '') {
+      router.push(`/admin/products?page=1`) // TODO: todas las rutas ponerlas en un archivo con constantes
+    } else {
+      router.push(`/admin/products?page=1&search=${result.data.search}`) // TODO: todas las rutas ponerlas en un archivo con constantes
+    }
   }
 
   return (
