@@ -1,4 +1,8 @@
+import { getCategories } from "@/actions/get-categories-action";
+
 export default async function ProductForm() {
+
+    const categories = await getCategories();
 
     return (
         <>
@@ -41,7 +45,10 @@ export default async function ProductForm() {
                     className="block w-full p-3 bg-slate-100 rounded"
                 >
                     <option value="">-- Seleccione --</option>
-          
+                    {categories.map(category => (
+                        <option key={category.id} value={category.id}>{category.name}</option>
+                    ))}
+
                 </select>
             </div>
         </>
