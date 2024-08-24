@@ -1,4 +1,5 @@
 import { getCategories } from "@/actions/get-categories-action";
+import ImageUpload from "./ImageUpload";
 
 export default async function ProductForm() {
 
@@ -51,6 +52,8 @@ export default async function ProductForm() {
 
                 </select>
             </div>
+
+            <ImageUpload />
         </>
     )
 }
