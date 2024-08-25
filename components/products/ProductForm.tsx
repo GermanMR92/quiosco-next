@@ -1,3 +1,5 @@
+// This is a server component
+
 import { getCategories } from "@/actions/get-categories-action";
 import ImageUpload from "./ImageUpload";
 
