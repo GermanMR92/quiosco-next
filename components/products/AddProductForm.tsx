@@ -1,16 +1,21 @@
 "use client";
 
+import { createProduct } from "@/actions/create-product-action";
 import { ProductFormSchema } from "@/src/schema";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 export default function AddProductForm({ children }: { children: React.ReactNode }) {
+
+    const router = useRouter();
 
     const handleSubmit = async (formData: FormData) => {
 
         const data = {
             name: formData.get('name'),
             price: formData.get('price'),
-            categoryId: formData.get('categoryId')
+            categoryId: formData.get('categoryId'),
+            image: formData.get('image')
         }
 
         const result = ProductFormSchema.safeParse(data);
@@ -20,6 +25,18 @@ export default function AddProductForm({ children }: { children: React.ReactNode
             })
             return
         }
+
+        const response = await createProduct(data);
+
+        if (response?.errors) {
+            response.errors.forEach((issue) => {
+                toast.error(issue.message);
+            })
+            return
+        }
+
+        toast.success('Producto creado correctamente');
+        router.push('/admin/products');
         
     }
 
@@ -37,7 +54,7 @@ export default function AddProductForm({ children }: { children: React.ReactNode
                 <input
                     className="bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold cursor-pointer rounded"
                     type="submit"
-                    value="Registrar producto"
+                    value="Añadir producto"
                 />
             </form>
         </div>

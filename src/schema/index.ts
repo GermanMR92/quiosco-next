@@ -46,6 +46,9 @@ export const ProductFormSchema = z.object({
     .string()
     .trim()
     .transform((value) => parseInt(value))
-    .refine(value => !isNaN(value), { message: 'La categoría es requerida' })
-    .or(z.number().min(1, { message: 'La categoría es requerida' })),
+    .refine(value => value > 0, { message: 'La categoría es requerida' }),
+
+  image: z
+    .string()
+    .min(1, { message: 'La imagen es requerida' })
 });
